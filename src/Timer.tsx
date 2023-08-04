@@ -29,24 +29,20 @@ function Timer({initialTime, isRunning, reset, breakL}:InitialTime) {
     useEffect(()=> 
     {
         let interval:number;
-        if(isRunning)
+
+        if(isRunning && currentTime>0)
         {
             interval = setInterval(()=>
             {
-                if(currentTime>0 && count<=25*60)
-                {
-                    setCurrentTime((prev)=> prev - 1);
-                    setCount((prev)=> prev+1);
-                }else
-                {
-                    setCount(0);
-                }
-            }, 1000);
+                setCurrentTime((prev)=> prev - 1);
+                setCount((prev)=> prev+1);
+            }, 1);
+
         }
 
         return () => clearInterval(interval)
-    },[currentTime , isRunning])
-
+    },[currentTime , isRunning, breakL])
+    
     const minutes = Math.floor(currentTime/60);
     const seconds = currentTime %60;
 

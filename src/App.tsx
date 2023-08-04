@@ -15,11 +15,11 @@ function App() {
       <h2> 25 + 5 Clock</h2>
       <div>
         <h3 id="break-label">Break Length</h3>
-        <button id="break-decrement" onClick={()=> isRunning==false? setBreakLength((prev)=> prev-1):null}>-</button>
+        <button id="break-decrement" onClick={()=> isRunning==false && breakLength>1? setBreakLength((prev)=> prev-1):null}>-</button>
         <span>{breakLength}</span>
         <button id='break-increment' onClick={()=> isRunning==false?setBreakLength((prev)=> prev + 1):null}>+</button>
         <h3 id="session-label">Session Length</h3>
-        <button id="session-decrement" onClick={()=>isRunning==false?setTimer((prev) => prev - 1) :null}>-</button>
+        <button id="session-decrement" onClick={()=>isRunning==false && timer>1?setTimer((prev) => prev - 1) :null}>-</button>
         <span>{timer}</span>
         <button id='session-increment' onClick={()=>isRunning==false?setTimer((prev) => prev+1):null}>+</button>
 
