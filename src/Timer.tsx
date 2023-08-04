@@ -11,17 +11,23 @@ interface InitialTime
 
 function Timer({initialTime, isRunning, reset, breakL}:InitialTime) {
     const [currentTime, setCurrentTime] = useState(initialTime*60);
+    const [currentBreak, setCurrentBreak] = useState(breakL*60);
+    const [timeLabel, setTimeLabel] = useState("Session");
+
     //const [h,m] = initialTime.split(":");
-    const[count, setCount]= useState(0);
+    //const[count, setCount]= useState(0);
     useEffect(()=>
     {
         if(reset)
         {
             setCurrentTime(initialTime*60)
             reset=false;
+            setTimeLabel("Session")
+            setCurrentBreak(breakL*60);
         }else
         {
             setCurrentTime(initialTime*60)
+            setCurrentBreak(breakL*60);
         }
     }, [initialTime,reset, breakL])
 
@@ -30,25 +36,53 @@ function Timer({initialTime, isRunning, reset, breakL}:InitialTime) {
     {
         let interval:number;
 
-        if(isRunning && currentTime>0)
+        if(isRunning)
         {
-            interval = setInterval(()=>
+            //let temp = true;
+            if(currentTime>-1)
             {
-                setCurrentTime((prev)=> prev - 1);
-                setCount((prev)=> prev+1);
-            }, 1);
+                interval = setInterval(()=>
+                {
+                    setCurrentTime((prev)=> prev - 1);
+                    //setCount((prev)=> prev+1);
+                }, 1000);
+                if (!isRunning) {
+                    clearInterval(interval);
+                }
+        
+            } 
+            
+            if(currentTime ==-1 && currentBreak>0)
+            {
+                setTimeLabel("Break");
+                setCurrentTime(currentBreak);
+                setCurrentBreak(-1);
+                
 
+            }
+            else if(currentTime==-1 && currentBreak==-1)
+            {
+                //console.log("klk");
+                setTimeLabel("Session");
+                setCurrentTime(initialTime*60);
+                setCurrentBreak(breakL*60);
+            }
         }
-
         return () => clearInterval(interval)
-    },[currentTime , isRunning, breakL])
+    },[currentTime , isRunning, currentBreak])
     
     const minutes = Math.floor(currentTime/60);
     const seconds = currentTime %60;
 
   return (
-    <h2>{minutes<10 ? '0' + minutes : minutes}:{seconds<10 ? '0' + seconds : seconds}</h2>
-
+    <div>
+        <h3 id='timer-label'>{timeLabel}</h3>
+        <h2 id='time-left'>{minutes<10 ? '0' + minutes : minutes}:{seconds<10 ? '0' + seconds : seconds}</h2>
+        <audio id='beep' autoPlay controls src='/beep.mp3' typeof='audio/mpeg' ></audio>
+        {/* <audio id='beep'>
+            {minutes==0 && seconds==0? <source src='./beep.mp3'></source>:null}
+        </audio> */}
+    </div>
   )
 }
 
