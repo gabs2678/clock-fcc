@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 
 interface InitialTime
 {
@@ -13,7 +13,8 @@ function Timer({initialTime, isRunning, reset, breakL}:InitialTime) {
     const [currentTime, setCurrentTime] = useState(initialTime*60);
     const [currentBreak, setCurrentBreak] = useState(breakL*60);
     const [timeLabel, setTimeLabel] = useState("Session");
-
+    const audioRef = useRef<HTMLAudioElement>(null);
+    //const audioRunning = useRef(false);
     //const [h,m] = initialTime.split(":");
     //const[count, setCount]= useState(0);
     useEffect(()=>
@@ -24,6 +25,11 @@ function Timer({initialTime, isRunning, reset, breakL}:InitialTime) {
             reset=false;
             setTimeLabel("Session")
             setCurrentBreak(breakL*60);
+            if(audioRef.current)
+            {
+                audioRef.current.pause();
+                audioRef.current.currentTime=0;
+            }
         }else
         {
             setCurrentTime(initialTime*60)
@@ -52,20 +58,23 @@ function Timer({initialTime, isRunning, reset, breakL}:InitialTime) {
         
             } 
             
-            if(currentTime ==-1 && currentBreak>0)
+            if(currentTime ==-1 && currentBreak>0 && audioRef.current)
             {
                 setTimeLabel("Break");
                 setCurrentTime(currentBreak);
                 setCurrentBreak(-1);
-                
+
+                audioRef.current?.play();
 
             }
-            else if(currentTime==-1 && currentBreak==-1)
+            else if(currentTime==-1 && currentBreak==-1 && audioRef.current)
             {
                 //console.log("klk");
                 setTimeLabel("Session");
                 setCurrentTime(initialTime*60);
                 setCurrentBreak(breakL*60);
+                audioRef.current?.play();
+
             }
         }
         return () => clearInterval(interval)
@@ -78,7 +87,7 @@ function Timer({initialTime, isRunning, reset, breakL}:InitialTime) {
     <div>
         <h3 id='timer-label'>{timeLabel}</h3>
         <h2 id='time-left'>{minutes<10 ? '0' + minutes : minutes}:{seconds<10 ? '0' + seconds : seconds}</h2>
-        <audio id='beep' autoPlay controls src='/beep.mp3' typeof='audio/mpeg' ></audio>
+        <audio id='beep' ref={audioRef} src='/beep.mp3' typeof='audio/mpeg' ></audio>
         {/* <audio id='beep'>
             {minutes==0 && seconds==0? <source src='./beep.mp3'></source>:null}
         </audio> */}

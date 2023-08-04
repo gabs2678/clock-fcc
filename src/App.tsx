@@ -8,7 +8,7 @@ function App() {
 
   const [isRunning, setIsRunning] = useState(false);
   const [reset,setReset] = useState(false);
-
+  
   useEffect(() => {
     if (reset) {
       setReset(false);
