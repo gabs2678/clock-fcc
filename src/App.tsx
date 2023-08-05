@@ -11,7 +11,9 @@ function App() {
   
   useEffect(() => {
     if (reset) {
-      setReset(false);
+      setTimeout(()=>{
+        setReset(false);
+      })
     }
   }, [reset]);
   

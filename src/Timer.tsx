@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-
+import './App.css'
 interface InitialTime
 {
     initialTime: number;
@@ -28,14 +28,15 @@ function Timer({initialTime, isRunning, reset, breakL}:InitialTime) {
             if(audioRef.current)
             {
                 audioRef.current.pause();
-                audioRef.current.currentTime=0;
+                audioRef.current.currentTime=-1;
             }
-        }else
+        }
+        else
         {
             setCurrentTime(initialTime*60)
             setCurrentBreak(breakL*60);
         }
-    }, [initialTime,reset, breakL])
+    }, [initialTime,reset,breakL])
 
 
     useEffect(()=> 
@@ -80,13 +81,13 @@ function Timer({initialTime, isRunning, reset, breakL}:InitialTime) {
         return () => clearInterval(interval)
     },[currentTime , isRunning, currentBreak])
     
-    const minutes = Math.floor(currentTime/60);
-    const seconds = currentTime %60;
+    const minutes = Math.floor(currentTime/60).toString().padStart(2,'0');
+    const seconds = (currentTime %60).toString().padStart(2,'0');
 
   return (
     <div>
         <h3 id='timer-label'>{timeLabel}</h3>
-        <h2 id='time-left'>{minutes<10 ? '0' + minutes : minutes}:{seconds<10 ? '0' + seconds : seconds}</h2>
+        <h2 id='time-left'>{minutes}:{seconds}</h2>
         <audio id='beep' ref={audioRef} src='/beep.mp3' typeof='audio/mpeg' ></audio>
         {/* <audio id='beep'>
             {minutes==0 && seconds==0? <source src='./beep.mp3'></source>:null}
