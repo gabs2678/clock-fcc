@@ -1,0 +1,62 @@
+/* General styles for the entire app */
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 20px;
+}
+
+/* Timer container styles */
+div {
+  margin-top: 30px;
+}
+
+/* Header styles */
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Timer label styles */
+h3 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+/* Break and Session length styles */
+#break-length,
+#session-length {
+  font-size: 24px;
+  margin: 0 10px;
+}
+
+/* Increment and decrement button styles */
+button {
+  font-size: 18px;
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+/* Play/Stop and Reset button styles */
+#start_stop,
+#reset {
+  font-size: 18px;
+  padding: 10px 20px;
+  margin: 20px;
+  cursor: pointer;
+}
+
+/* Timer component styles */
+#timer-label {
+  font-size: 24px;
+}
+
+#time-left {
+  font-size: 48px;
+  margin: 10px 0;
+}
+
+/* Audio element styles */
+audio {
+  display: none;
+}
